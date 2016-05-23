@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>LOGIN</title>
+<link href="include/css/bootstrap.css" rel="stylesheet">
+<link href="include/css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="include/css/bootstrap-theme.css" rel="stylesheet">
+<style type="text/css">
+.mbg {margin-top:0px}
+.dvb {width:340px;height:400px;background-color:#ddd;bordercolordark:#fff;box-shadow:2px 2px 10px #333333;}
+</style>
+<script src="include/js/jquery-2.1.1.js"></script>
+<script src="include/js/bootstrap.js"></script>
+<script type="text/javascript">
+var url
+function createXMLHttpRequest(url){
+	xmlhttp=""
+	if(window.ActiveXObject){
+		try{
+		xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+		}catch(e){
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}}
+		else if(window.XMLHttpRequest){
+			xmlhttp = new XMLHttpRequest();
+				if (xmlhttp.overrideMimeType){ xmlhttp.overrideMimeType("text/xml");}
+		}
+		if(!xmlhttp){ window.alert("Do not support XMLHttpRequest!");}
+		xmlhttp.onreadystatechange=XHRChanged;
+		xmlhttp.open("GET",url,true);
+		xmlhttp.send(null);
+}
+function XHRChanged(){
+	if (xmlhttp.readyState==4){
+			getBack(xmlhttp.responseText);
+		}
+}
+function cookieExpiryDate(){
+	date = new Date();
+	return (new Date(date.setDate(date.getYear()+10))).toGMTString();
+}
+/*
+if (window.ActiveXObject){	//For IE browser
+	xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+	xmlDoc.async=false;
+	xmlDoc.load("config.xml");
+	var fpath=xmlDoc.getElementsByTagName("dbtype")[0].childNodes[0].nodeValue
+	}
+else if (document.implementation && document.implementation.createDocument){ //For Firefox
+	var xmlDom = document.implementation.createDocument("","",null);
+	xmlDom.load("config.xml");
+	xmlDom.onload = function(){
+	var fpath=xmlDom.getElementsByTagName("dbtype")[0].childNodes[0].nodeValue;
+	}}
+else{
+	alert('Your browser cannot handle this script');
+}
+*/
+function getBack(vchReturn){
+	try{
+		vchReturn=vchReturn.substr(1,vchReturn.length);
+		if (vchReturn.substr(0,5)=="Error"){
+			alert(vchReturn);
+			return;
+		}
+		if (vchReturn=="0"){
+			alert("Error in username or password");
+			document.getElementById("inp1").value="";
+			document.getElementById("inp2").value="";
+			return;
+		}
+		document.cookie=vchReturn
+		//document.cookie="1001#96001#eric2"
+		timeid=setTimeout(function(){
+		window.location="show.html";},2000);
+			}catch(e){ alert(e);}
+}
+$(document).ready(function(){
+	$(".dvb").show();
+	$(".btn").click(function(){
+		var udf1=document.getElementById("inp1").value
+		var udf2=document.getElementById("inp2").value
+		if (isNaN(udf1)==1 || (udf1.length!=5)||udf2==""){
+			alert("incorrect number");
+			return;
+		}
+		url="loginCheck.php?Pid="+escape(udf1)+"&Pwd="+escape(udf2)+"&fresh="+Math.random();
+		createXMLHttpRequest(url)
+	});
+})
+</script>
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body><center>
+<noscript>
+	<div>
+        <p>Unfortunately your browser does not hava JavaScript capabilities which are required to exploit full functionality of our site. This could be the result of two possible scenarios:</p>
+        <ol><li>You are using an old web browser, in which case you should upgrade it to a newer version. We recommend the latest version of <a href="http://www.getfirefox.com">Firefox</a>.</li>
+        <li>You have disabled JavaScript in you browser, in which case you will have to enable it to properly use our site. <a href="http://www.google.com/support/bin/answer.py?answer=23852">Learn how to enable JavaScript</a>.</li>
+        </ol>
+    </div>
+</noscript>
+<div style='margin-top:50px;' class=dvb>
+<img src='img/survB.png' class=mbg>
+<div class="container" style="width:300px;margin-top:-73px;">
+	<form class="form-signin" role="form">
+    <h3 class="form-signin-heading" style='margin-left:-120px'>SIGN IN</h3>
+	<div class="input-group">
+	<span class="input-group-addon">I D</span>
+	<input id='inp1' type="text" class="form-control" placeholder="Username" required autofocus>
+	</div><br>
+	<div class="input-group">
+	<span class="input-group-addon">P &nbsp;</span>
+	<input id='inp2' type="password" class="form-control" placeholder="Password" required>
+	</div><br><br><br><br>
+    <a href="javascript:void(0)" class="btn btn-lg btn-primary btn-block" >Sign in</a>
+    </form>
+</div></div></center>
+</body></html>
