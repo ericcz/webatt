@@ -1,0 +1,3 @@
+﻿<root>
+<dbtype sqlserver="MsSqlDB" mysql="MySqlDB" orac="oracDB">MySqlDB</dbtype>
+</root>
